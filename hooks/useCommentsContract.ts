@@ -3,7 +3,7 @@ import { useProvider, useSigner } from "wagmi";
 import type { BigNumber } from "ethers";
 // Import our contract ABI (a json representation of our contract's public interface).
 // The hardhat compiler writes this file to artifacts during compilation.
-import CommentsContract from "../artifacts/contracts/Comments.sol/Comments.json";
+
 
 export interface Comment {
   id: string;
@@ -31,7 +31,112 @@ const useCommentsContract = () => {
   // no signed in wallet then we'll pass in the connected provider.
   const contract = wagmi.useContract({
     addressOrName: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    contractInterface: CommentsContract.abi,
+    contractInterface: [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "id",
+              "type": "uint32"
+            },
+            {
+              "internalType": "string",
+              "name": "topic",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "creator_address",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "message",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "created_at",
+              "type": "uint256"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct Comments.Comment",
+          "name": "comment",
+          "type": "tuple"
+        }
+      ],
+      "name": "CommentAdded",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "topic",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "addComment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "topic",
+          "type": "string"
+        }
+      ],
+      "name": "getComments",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "id",
+              "type": "uint32"
+            },
+            {
+              "internalType": "string",
+              "name": "topic",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "creator_address",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "message",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "created_at",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Comments.Comment[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
     signerOrProvider: signer.data || provider,
   });
 
